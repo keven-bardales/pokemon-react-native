@@ -19,6 +19,7 @@ const App = () => {
   const [firstGenPokemonDetails, setFirstGenPokemonDetails] = useState([]);
   const [filteredPokemon, setFilteredPokemon] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const [error, setError] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -38,9 +39,26 @@ const App = () => {
       setFirstGenPokemonDetails(pokemonDetails);
       setFilteredPokemon(pokemonDetails);
     } catch (error) {
+      setError("Error fetching Pokemons");
       console.error("Error fetching data:", error);
     }
   };
+
+  if (error) {
+    return (
+      <View style={styles.container}>
+        <Text>Error: {error}</Text>
+      </View>
+    );
+  }
+
+  if (!firstGenPokemonDetails.length || firstGenPokemonDetails.length === 0) {
+    return (
+      <View style={styles.container}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
   const handleSearch = (text) => {
     setSearchText(text);

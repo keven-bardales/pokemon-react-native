@@ -5,6 +5,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 const PokemonDetail = () => {
   const params = useGlobalSearchParams() as { id: string };
   const [pokemonDetails, setPokemonDetails] = useState(null);
+  const [error, setError] = useState(null);
 
   const router = useRouter();
 
@@ -17,7 +18,7 @@ const PokemonDetail = () => {
         const data = await response.json();
         setPokemonDetails(data);
       } catch (error) {
-        console.error("Error fetching Pokemon details:", error);
+        setError("Error fetching Pokemon details");
       }
     };
 
@@ -36,6 +37,14 @@ const PokemonDetail = () => {
     return (
       <View style={styles.container}>
         <Text>Loading...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.container}>
+        <Text>Error: {error}</Text>
       </View>
     );
   }
@@ -117,6 +126,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "#ccc",
+  },
+  errorText: {
+    color: "red",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 
